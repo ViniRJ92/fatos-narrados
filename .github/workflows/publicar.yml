@@ -1,0 +1,62 @@
+# Atualiza os dados a partir das APIs oficiais (diariamente) e publica o site no GitHub Pages.
+# Cada mudança de dado vira um commit: o histórico do Git mostra quando cada número mudou,
+# inclusive revisões feitas pelos próprios órgãos.
+name: Atualizar dados e publicar
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 11 * * *'   # 08:00 em Brasília
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    # Em push o código já chegou com os dados; só agenda/execução manual baixam dados novos.
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Testes
+        run: npm test
+      - name: Baixar dados das fontes oficiais
+        # Falha parcial não interrompe: o manifesto registra a série que falhou e o dado anterior é mantido.
+        run: npm run update || echo "Atualização concluída com falhas parciais (ver data/manifest.json)"
+      - name: Versionar mudanças
+        run: |
+          git config user.name "atualizacao-automatica"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "Dados: atualização automática $(date -u +%Y-%m-%d)"
+          git push
+
+  publicar:
+    needs: atualizar
+    if: always() && (needs.atualizar.result == 'success' || needs.atualizar.result == 'skipped')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main   # inclui o commit de dados recém-criado
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4
