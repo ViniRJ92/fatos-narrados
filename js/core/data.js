@@ -21,6 +21,8 @@ async function load(path) {
 
 export const loadSeries = id => load(`data/series/${id}.json`);
 export const loadManifest = () => load('data/manifest.json');
+/** Qualquer arquivo dentro de data/ (ex.: 'emendas/meta.json'). */
+export const loadData = path => load(`data/${path}`);
 
 export async function loadMany(ids) {
   const entries = await Promise.all(ids.map(async id => [id, await loadSeries(id).catch(() => null)]));

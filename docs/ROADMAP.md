@@ -9,6 +9,22 @@ O portal foi construído para crescer sem reescrita: o catálogo (`js/data/catal
 - Consultas ao vivo: PNCP (contratações) e Câmara (cota parlamentar).
 - Atualização automática diária via GitHub Actions, com histórico versionado.
 
+## Fase 1.5: concluída
+
+- Desmontando Boatos: verificador por regras na página inicial.
+- Emendas parlamentares (arquivo da CGU, 2014 em diante) com filtros, mapa, comparação e página de cada emenda.
+- Transferências especiais ("Pix") consultadas ao vivo no Transferegov.br.
+
+## Próximos passos para emendas
+
+| O que falta | Fonte | Como integrar |
+|---|---|---|
+| Valor autorizado (dotação) de cada emenda | Siga Brasil (Senado) | Sem API pública. Avaliar exportações periódicas do próprio Siga Brasil |
+| Órgão executor e notas de empenho por emenda | API do Portal da Transparência (CGU) | Exige chave gratuita. Guardar como *secret* do GitHub Actions e consultar só no script de atualização |
+| Convênios comuns (plano de trabalho, prestação de contas) | Transferegov.br | Bases de convênios do Transferegov; ligar pelo número do convênio que já está no arquivo da CGU |
+| Auditorias e decisões | TCU e CGU | Consulta por número de convênio ou CNPJ, sem tratar investigação como condenação |
+| Verificador com mais assuntos | Séries novas do catálogo | Cada série nova do catálogo pode ganhar palavras-chave em `js/verify/engine.js` |
+
 ## Fase 2 — novas fontes (todas já verificadas no catálogo)
 
 | Tema pedido | Fonte oficial | Como integrar |

@@ -3,13 +3,16 @@ import { fmtDateTime } from '../core/format.js';
 
 const NAV = [
   ['index.html', 'Início'],
-  ['indicador.html', 'Indicadores'],
+  ['painel.html', 'Indicadores'],
   ['governos.html', 'Governos'],
   ['gastos.html', 'Gastos públicos'],
+  ['emendas.html', 'Emendas'],
   ['fiscalizacao.html', 'Fiscalização'],
   ['fontes.html', 'Fontes'],
   ['metodologia.html', 'Metodologia'],
 ];
+// Páginas internas marcam o item de menu da seção a que pertencem.
+const SECTION_OF = { 'resultado.html': 'index.html', 'indicador.html': 'painel.html', 'tema.html': 'painel.html', 'emenda.html': 'emendas.html' };
 
 const THEME_KEY = 'fn-theme';
 function storedTheme() { try { return localStorage.getItem(THEME_KEY); } catch { return null; } }
@@ -26,13 +29,14 @@ function currentTheme() {
 }
 
 export function mountLayout() {
-  const page = location.pathname.split('/').pop() || 'index.html';
+  const file = location.pathname.split('/').pop() || 'index.html';
+  const page = SECTION_OF[file] || file;
   const header = document.createElement('header');
   header.className = 'site-header';
   header.innerHTML = `
     <a class="skip" href="#conteudo">Pular para o conteúdo</a>
     <div class="wrap">
-      <a class="brand" href="index.html" aria-label="Fatos Narrados — página inicial">Fatos Narrados</a>
+      <a class="brand" href="index.html" aria-label="Fatos Narrados, página inicial">Fatos Narrados</a>
       <button class="icon-btn menu-btn" aria-expanded="false" aria-controls="nav-principal">Menu</button>
       <nav class="nav" id="nav-principal" aria-label="Principal">
         ${NAV.map(([href, label]) => `<a href="${href}"${href === page ? ' aria-current="page"' : ''}>${label}</a>`).join('')}
@@ -59,14 +63,14 @@ export function mountLayout() {
     <div class="wrap cols">
       <div>
         <h3>Fatos Narrados</h3>
-        <p>Portal independente de transparência pública. Não exige que você acredite em uma narrativa: mostra os números e a fonte oficial de cada um, para que você mesmo verifique.</p>
+        <p>Portal independente de transparência pública. Em vez de pedir que você acredite em uma versão dos fatos, mostra os números e a fonte oficial de cada um para você conferir.</p>
       </div>
       <div>
         <h3>Princípios</h3>
         <ul>
-          <li>Somente fontes oficiais e primárias</li>
-          <li>Mesmos critérios para todos os governos</li>
-          <li>Link para o dado bruto em cada número</li>
+          <li>Só usamos fontes oficiais e primárias</li>
+          <li>Os critérios são os mesmos para todos os governos</li>
+          <li>Todo número tem link para o dado original</li>
         </ul>
       </div>
       <div>
@@ -74,7 +78,7 @@ export function mountLayout() {
         <ul>
           <li><a href="fontes.html">Catálogo de fontes</a></li>
           <li><a href="metodologia.html">Metodologia e limitações</a></li>
-          <li id="footer-updated" class="muted">Atualização: verificando…</li>
+          <li id="footer-updated" class="muted">Verificando a data da atualização…</li>
         </ul>
       </div>
     </div>`;
@@ -85,6 +89,6 @@ export function mountLayout() {
     if (el) el.textContent = `Dados atualizados em ${fmtDateTime(m.updatedAt)}`;
   }).catch(() => {
     const el = document.getElementById('footer-updated');
-    if (el) el.textContent = 'Manifesto de dados indisponível';
+    if (el) el.textContent = 'Não foi possível ver a data da última atualização';
   });
 }

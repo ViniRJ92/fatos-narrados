@@ -4,3 +4,5 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+# Gerado a cada publicação por scripts/update-emendas.mjs (grande demais para versionar)
+data/emendas/

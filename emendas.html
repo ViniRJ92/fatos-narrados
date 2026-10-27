@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Emendas parlamentares | Fatos Narrados</title>
+  <meta name="description" content="Pesquise emendas parlamentares: quem apresentou, para onde foi o dinheiro, quanto foi empenhado e pago, quem recebeu e quais documentos existem. Dados do Portal da Transparência (CGU) e do Transferegov.br.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/pages/emendas.js"></script>
+</head>
+<body>
+  <main id="conteudo" class="wrap">
+    <header class="page-head">
+      <p class="kicker">Emendas parlamentares</p>
+      <h1>Siga o dinheiro das emendas</h1>
+      <p class="lead">Quem apresentou cada emenda, para onde o dinheiro foi, quanto já foi empenhado e pago e quem recebeu. Os números saem do arquivo oficial da CGU e são somados aqui, com o método explicado em cada total.</p>
+    </header>
+
+    <div id="status" aria-live="polite"><p class="loading">Carregando emendas…</p></div>
+
+    <section aria-labelledby="h-filtros">
+      <details class="card" id="filtros" open>
+        <summary style="cursor:pointer;font-weight:650" id="h-filtros">Filtros</summary>
+        <form id="f" class="emendas-filtros" autocomplete="off">
+          <label class="field"><span>Ano da emenda</span><select name="anos" id="anos"></select></label>
+          <label class="field wide"><span>Busca livre</span><input type="search" name="q" placeholder="Nome, número, município, área, programa…"></label>
+          <label class="field"><span>Parlamentar ou autor</span><input type="text" name="autor" list="dl-autores" placeholder="Nome do autor"></label>
+          <label class="field"><span>Casa legislativa</span><select name="casa">
+            <option value="">Todas</option><option value="Câmara">Câmara</option><option value="Senado">Senado</option>
+            <option value="Bancada estadual">Bancada estadual</option><option value="Comissão">Comissão</option>
+            <option value="Relator-geral (CMO)">Relator-geral</option><option value="nao-identificada">Não identificada</option></select></label>
+          <label class="field"><span>Partido</span><select name="partido" id="partido"><option value="">Todos</option></select></label>
+          <label class="field"><span>UF</span><select name="uf" id="uf"><option value="">Todas</option></select></label>
+          <label class="field"><span>Município</span><input type="text" name="municipio" list="dl-municipios" placeholder="Nome do município"></label>
+          <label class="field"><span>Tipo de emenda</span><select name="tipo" id="tipo"><option value="">Todos</option></select></label>
+          <label class="field"><span>Número da emenda</span><input type="text" name="numero" inputmode="numeric" placeholder="Ex.: 202538970001"></label>
+          <label class="field"><span>Nº do convênio</span><input type="text" name="instrumento" inputmode="numeric" placeholder="Número do instrumento"></label>
+          <label class="field"><span>Programa</span><select name="programa" id="programa"><option value="">Todos</option></select></label>
+          <label class="field"><span>Área (função)</span><select name="funcao" id="funcao"><option value="">Todas</option></select></label>
+          <label class="field"><span>Beneficiário</span><input type="text" name="beneficiario" placeholder="Nome de quem recebeu"></label>
+          <label class="field"><span>CNPJ do beneficiário</span><input type="text" name="cnpj" inputmode="numeric" placeholder="Somente números"></label>
+          <label class="field"><span>Situação da execução</span><select name="situacao" id="situacao"><option value="">Todas</option></select></label>
+          <label class="field"><span>Empenhado mínimo (R$)</span><input type="number" name="min" min="0" step="1000"></label>
+          <label class="field"><span>Empenhado máximo (R$)</span><input type="number" name="max" min="0" step="1000"></label>
+          <label class="field"><span>Recebimentos a partir de</span><input type="month" name="pagDe"></label>
+          <label class="field"><span>Recebimentos até</span><input type="month" name="pagAte"></label>
+          <label class="field"><span>Documentação</span><select name="doc">
+            <option value="">Qualquer</option><option value="convenio">Com convênio registrado</option>
+            <option value="pix">Transferência especial (plano no Transferegov)</option><option value="nenhum">Sem instrumento vinculado nesta base</option></select></label>
+          <label class="field"><span>Transparência</span><select name="transp" id="transp"><option value="">Qualquer</option></select></label>
+          <label class="field"><span>Órgão executor</span><select disabled><option>Não disponível na base</option></select></label>
+          <label class="field"><span>Ministério</span><select disabled><option>Não disponível na base</option></select></label>
+          <div class="field" style="justify-content:end"><button class="btn" type="reset">Limpar filtros</button></div>
+        </form>
+        <p class="muted" style="font-size:.82rem;margin:.6rem 0 0">Órgão executor e ministério não aparecem no arquivo de emendas da CGU, por isso esses filtros estão desligados. Casa e partido vêm das listas oficiais da Câmara e do Senado, cruzadas pelo nome do autor; o partido é o registrado nas legislaturas de 2011 a 2027, não necessariamente o da data da emenda.</p>
+        <datalist id="dl-autores"></datalist><datalist id="dl-municipios"></datalist>
+      </details>
+    </section>
+
+    <section aria-labelledby="h-painel">
+      <h2 id="h-painel" class="sr-only">Painel</h2>
+      <div id="cards" class="grid kpis"></div>
+    </section>
+
+    <div class="seg" role="tablist" id="tabs" style="margin:1rem 0">
+      <button type="button" role="tab" data-tab="lista" aria-pressed="true">Resultados</button>
+      <button type="button" role="tab" data-tab="mapa" aria-pressed="false">Mapa</button>
+      <button type="button" role="tab" data-tab="comparar" aria-pressed="false">Comparar</button>
+      <button type="button" role="tab" data-tab="tipos" aria-pressed="false">Tipos de emenda</button>
+      <button type="button" role="tab" data-tab="qualidade" aria-pressed="false">Qualidade dos dados</button>
+    </div>
+
+    <section class="tab" id="tab-lista">
+      <div class="section-head">
+        <p id="count" class="muted" style="margin:0"></p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <label class="field" style="flex-direction:row;align-items:center;gap:.4rem"><span>Ordenar</span><select id="ordem">
+            <option value="emp">Maior empenhado</option><option value="pago">Maior pago</option><option value="naoPago">Maior saldo não pago</option><option value="id">Número da emenda</option></select></label>
+          <button class="btn" id="csv" type="button">Exportar CSV</button>
+        </div>
+      </div>
+      <div id="lista"></div>
+      <div class="pager" id="pager"></div>
+    </section>
+
+    <section class="tab" id="tab-mapa" hidden>
+      <div class="layout-2">
+        <div class="card">
+          <div class="toolbar" style="margin-bottom:.5rem">
+            <label class="field"><span>Valor no mapa</span><select id="mapa-valor"><option value="pago">Pago (total)</option><option value="emp">Empenhado</option><option value="n">Quantidade de emendas</option></select></label>
+          </div>
+          <div id="mapa"></div>
+          <p class="muted" id="mapa-nota" style="font-size:.82rem;margin-top:.5rem"></p>
+        </div>
+        <aside class="card">
+          <h2 style="font-size:1.1rem" id="mun-title">Municípios</h2>
+          <p class="muted" style="font-size:.85rem">Clique em um estado no mapa para ver os municípios. Clique em um município para filtrar as emendas.</p>
+          <div id="municipios"></div>
+          <h3 style="font-size:1rem;margin-top:1rem">Áreas com mais recursos</h3>
+          <div id="areas"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="tab" id="tab-comparar" hidden>
+      <div class="card">
+        <div class="toolbar">
+          <label class="field"><span>Comparar</span><select id="cmp-dim">
+            <option value="autor">Parlamentares e autores</option><option value="uf">Estados</option><option value="municipio">Municípios</option>
+            <option value="ano">Anos</option><option value="funcao">Áreas</option><option value="tipo">Tipos de emenda</option></select></label>
+          <label class="field"><span>Medida</span><select id="cmp-met">
+            <option value="pago">Valor pago</option><option value="emp">Valor empenhado</option><option value="n">Quantidade de emendas</option>
+            <option value="nFavs">Quantidade de beneficiários</option><option value="pctPago">Pago em relação ao empenhado (%)</option></select></label>
+          <label class="field"><span>Mostrar somente</span><input type="text" id="cmp-q" placeholder="Ex.: SP, RJ ou parte do nome"></label>
+        </div>
+        <div id="cmp"></div>
+        <p class="notice neutral" style="margin-top:1rem;font-size:.88rem">Valores maiores não indicam mais mérito, eficiência ou irregularidade. Mandatos, modalidades, regras e prazos de execução são diferentes entre parlamentares e anos. O valor autorizado não está na base consultada; a comparação usa empenho e pagamento. A comparação respeita os filtros acima.</p>
+      </div>
+    </section>
+
+    <section class="tab" id="tab-tipos" hidden>
+      <div id="tipos" class="grid cards"></div>
+    </section>
+
+    <section class="tab" id="tab-qualidade" hidden>
+      <div id="qualidade"></div>
+    </section>
+
+    <section class="prose" style="margin-top:2.5rem">
+      <h2>Como os totais são calculados</h2>
+      <ul>
+        <li><strong>Empenhado e liquidado:</strong> soma dos valores do arquivo de emendas da CGU para as emendas filtradas.</li>
+        <li><strong>Pago:</strong> pago no próprio ano mais restos a pagar pagos nos anos seguintes.</li>
+        <li><strong>Não pago (estimativa):</strong> empenhado menos pago, menos restos a pagar pagos e cancelados. Não usa "restos a pagar inscritos", que podem ser reinscritos a cada ano.</li>
+        <li><strong>Sem dupla contagem:</strong> os recebimentos por favorecido e os convênios mostram o caminho do mesmo dinheiro e nunca são somados aos totais.</li>
+        <li><strong>Valor autorizado:</strong> a dotação de cada emenda não está nesta base. Ela pode ser consultada no <a href="https://www12.senado.leg.br/orcamento/sigabrasil" target="_blank" rel="noopener">Siga Brasil</a>, que não tem API pública.</li>
+      </ul>
+      <p>Veja também a <a href="metodologia.html#emendas">metodologia completa</a>.</p>
+    </section>
+  </main>
+</body>
+</html>

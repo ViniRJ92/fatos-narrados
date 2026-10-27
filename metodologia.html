@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Metodologia — Fatos Narrados</title>
-  <meta name="description" content="Princípios editoriais, regras de atribuição de dados a governos, tratamento das séries oficiais, revisões e limitações do portal Fatos Narrados.">
+  <title>Metodologia | Fatos Narrados</title>
+  <meta name="description" content="Como o Fatos Narrados trabalha: princípios editoriais, como os dados são atribuídos a cada governo, como as séries oficiais são tratadas, revisões e limitações.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,57 +16,86 @@
   <main id="conteudo" class="wrap">
     <header class="page-head">
       <p class="kicker">Metodologia</p>
-      <h1>Como o portal trabalha</h1>
-      <p class="lead">Regras públicas, aplicadas igualmente a qualquer governo. Se uma regra muda, ela muda para todos — e a mudança fica registrada aqui.</p>
+      <h1>Como o portal funciona</h1>
+      <p class="lead">As regras são públicas e valem igualmente para qualquer governo. Se uma regra mudar, ela muda para todos, e a mudança fica registrada aqui.</p>
     </header>
 
     <div class="prose">
       <h2 id="principios">Princípios editoriais</h2>
       <ol>
-        <li><strong>Fatos verificáveis, não narrativas.</strong> Todo número exibido vem de um órgão público oficial e tem link para a consulta original.</li>
-        <li><strong>Mesmo critério para todos.</strong> As métricas por mandato são calculadas por um único código, sem exceções por governo.</li>
-        <li><strong>Neutralidade visual.</strong> O portal não usa cores de partido nem pinta números de “bom” ou “ruim”. Mandatos aparecem em faixas cinza alternadas.</li>
-        <li><strong>Correlação não é causalidade.</strong> Mostrar que um indicador subiu durante um mandato não significa que o governo foi a causa. Os limites estão explicados junto de cada comparação.</li>
-        <li><strong>Nada é inventado.</strong> Se uma fonte falha, o portal mantém o último dado baixado e informa a falha; nunca estima ou preenche lacunas.</li>
+        <li><strong>Fatos que podem ser conferidos.</strong> Todo número exibido vem de um órgão público oficial e tem link para a consulta original.</li>
+        <li><strong>Mesmo critério para todos.</strong> As métricas de cada mandato são calculadas pelo mesmo código, sem exceção para nenhum governo.</li>
+        <li><strong>Visual neutro.</strong> O portal não usa cores de partido nem marca números como “bons” ou “ruins”. Os mandatos aparecem em faixas cinza alternadas.</li>
+        <li><strong>Correlação não é causalidade.</strong> Um indicador ter subido durante um mandato não quer dizer que o governo foi a causa. Os limites de cada comparação estão explicados junto com ela.</li>
+        <li><strong>Nada é inventado.</strong> Se uma fonte falhar, o portal mantém o último dado baixado e avisa sobre a falha. Ele nunca faz estimativas para preencher lacunas.</li>
       </ol>
 
-      <h2 id="atribuicao">Atribuição de dados aos governos</h2>
+      <h2 id="atribuicao">Como os dados são atribuídos a cada governo</h2>
       <ul>
-        <li><strong>Dados mensais</strong> (inclusive trimestres móveis da PNAD): pertencem ao governo que estava no cargo no <em>último dia do mês</em>. Ex.: maio/2016 é de Temer (assumiu interinamente em 12/05/2016).</li>
-        <li><strong>Dados trimestrais:</strong> governo no cargo no último dia do trimestre.</li>
-        <li><strong>Dados anuais:</strong> governo no cargo em 31 de dezembro. Ex.: 2016 é atribuído a Temer; 1992 a Itamar.</li>
-        <li><strong>Valor herdado:</strong> para variações entre início e fim do mandato, o ponto de partida é a última observação <em>anterior</em> ao primeiro período do mandato.</li>
-        <li><strong>Interinidade:</strong> o período interino conta para quem exercia a Presidência (Itamar a partir de 02/10/1992; Temer a partir de 12/05/2016).</li>
-        <li><strong>Mandatos curtos ou em curso</strong> recebem as marcas “parcial” ou “em curso” e, sempre que possível, uma versão anualizada da métrica.</li>
+        <li><strong>Dados mensais</strong>, inclusive os trimestres móveis da PNAD, contam para o governo que estava no cargo no <em>último dia do mês</em>. Por exemplo, maio de 2016 conta para Temer, que assumiu interinamente em 12/05/2016.</li>
+        <li><strong>Dados trimestrais</strong> contam para o governo que estava no cargo no último dia do trimestre.</li>
+        <li><strong>Dados anuais</strong> contam para o governo que estava no cargo em 31 de dezembro. Assim, 2016 fica com Temer e 1992 com Itamar.</li>
+        <li><strong>Valor herdado:</strong> quando calculamos a variação entre o início e o fim de um mandato, o ponto de partida é o último dado <em>anterior</em> ao primeiro período do mandato.</li>
+        <li><strong>Presidentes interinos:</strong> o período interino conta para quem estava exercendo a Presidência. Itamar a partir de 02/10/1992 e Temer a partir de 12/05/2016.</li>
+        <li><strong>Mandatos curtos ou ainda em andamento</strong> aparecem marcados como “parcial” ou “em curso” e, sempre que possível, também com a média anual da métrica.</li>
       </ul>
 
       <h2 id="metricas">Métricas da comparação entre governos</h2>
       <div id="metric-list"></div>
 
-      <h2 id="tratamento">Tratamento das séries</h2>
+      <h2 id="tratamento">Como as séries são tratadas</h2>
       <ul>
-        <li><strong>IPCA por item:</strong> o IBGE publica os subitens em tabelas diferentes conforme a estrutura de pesos (2938: jul/2006–dez/2011; 1419: 2012–2019; 7060: desde 2020). O portal encadeia as variações mensais do mesmo código de subitem e calcula o acumulado em 12 meses.</li>
-        <li><strong>Resultado primário e nominal:</strong> o Banco Central publica a <em>necessidade de financiamento</em> (positivo = déficit). O portal inverte o sinal para que superávit apareça como número positivo. A série original pode ser conferida no link do dado bruto.</li>
-        <li><strong>Séries diárias</strong> (Selic, dólar) são convertidas em mensais: último valor do mês para a meta Selic; média dos dias úteis para o dólar. Datas futuras da meta Selic (vigência até a próxima reunião) são descartadas.</li>
-        <li><strong>PIB anual:</strong> taxa acumulada em quatro trimestres no 4º trimestre (tabela 5932 do IBGE), equivalente à variação anual.</li>
-        <li><strong>Gastos por função:</strong> despesa liquidada até o 6º bimestre no RREO da União (SICONFI). O refinanciamento da dívida, que só aparece em alguns anos do relatório, é retirado para manter a comparabilidade. A correção monetária usa a média anual do IPCA.</li>
-        <li><strong>Valores monetários</strong> do dólar e da balança comercial são nominais. A renda do trabalho já vem deflacionada pelo IBGE.</li>
+        <li><strong>IPCA por item:</strong> o IBGE publica os subitens em tabelas diferentes, de acordo com a estrutura de pesos de cada época. A tabela 2938 vai de julho de 2006 a dezembro de 2011, a 1419 cobre 2012 a 2019 e a 7060 vale desde 2020. O portal junta as variações mensais do mesmo subitem nessas tabelas e calcula o acumulado em 12 meses.</li>
+        <li><strong>Resultado primário e nominal:</strong> o Banco Central publica a <em>necessidade de financiamento</em>, em que um número positivo significa déficit. O portal inverte o sinal para que o superávit apareça como número positivo. A série original pode ser conferida no link do dado original.</li>
+        <li><strong>Séries diárias</strong>, como Selic e dólar, viram séries mensais. Para a meta Selic usamos o último valor do mês, e para o dólar, a média dos dias úteis. A meta Selic também traz datas futuras, válidas até a próxima reunião do Copom, que são descartadas.</li>
+        <li><strong>PIB anual:</strong> usamos a taxa acumulada em quatro trimestres no 4º trimestre (tabela 5932 do IBGE), que equivale à variação do ano.</li>
+        <li><strong>Gastos por função:</strong> usamos a despesa liquidada até o 6º bimestre no RREO da União (SICONFI). O refinanciamento da dívida só aparece em alguns anos do relatório, por isso é retirado para que os anos possam ser comparados. A correção pela inflação usa a média anual do IPCA.</li>
+        <li><strong>Valores em dinheiro</strong> do dólar e da balança comercial não são corrigidos pela inflação. A renda do trabalho já vem corrigida pelo próprio IBGE.</li>
       </ul>
 
       <h2 id="atualizacao">Atualização e revisões</h2>
-      <p>Os dados são baixados por um script (<code>scripts/update-data.mjs</code>) direto das APIs oficiais e gravados com data e hora da consulta. Órgãos como IBGE e Banco Central revisam dados passados (PIB e estatísticas fiscais, principalmente); a cada atualização, o portal adota a versão mais recente publicada pelo órgão. Em qualquer página de indicador, o botão “Verificar na fonte agora” compara o número exibido com a API oficial em tempo real.</p>
+      <p>Um script (<code>scripts/update-data.mjs</code>) baixa os dados direto das APIs oficiais e grava a data e a hora de cada consulta. Órgãos como o IBGE e o Banco Central revisam dados antigos, principalmente o PIB e as estatísticas fiscais. A cada atualização, o portal passa a usar a versão mais recente publicada pelo órgão. Em qualquer página de indicador, o botão “Verificar na fonte agora” compara o número exibido com a API oficial naquele momento.</p>
 
       <h2 id="limites">Limitações conhecidas</h2>
       <ul>
-        <li>A PNAD Contínua começa em 2012: não há taxa de desemprego comparável para mandatos anteriores.</li>
-        <li>A dívida bruta na metodologia atual começa em dez/2006; a dívida líquida, em dez/2001.</li>
+        <li>A PNAD Contínua começa em 2012, então não há taxa de desemprego comparável para os mandatos anteriores.</li>
+        <li>A dívida bruta, na metodologia atual, começa em dezembro de 2006. A dívida líquida começa em dezembro de 2001.</li>
         <li>Os relatórios do SICONFI estão disponíveis a partir de 2015.</li>
-        <li>Preços de combustíveis em reais (ANP) e detalhamento de comércio por produto (Comex Stat) ainda não estão integrados — veja o <a href="fontes.html">catálogo de fontes</a>.</li>
-        <li>Indicadores de estados e municípios, emendas parlamentares, renúncias fiscais, estatais, obras e recuperação judicial estão catalogados e em planejamento.</li>
+        <li>Os preços dos combustíveis em reais (ANP) e o comércio exterior por produto (Comex Stat) ainda não estão integrados. Veja o <a href="fontes.html">catálogo de fontes</a>.</li>
+        <li>Indicadores de estados e municípios, renúncias fiscais, estatais, obras e recuperação judicial estão catalogados e em planejamento.</li>
       </ul>
 
+      <h2 id="emendas">Emendas parlamentares</h2>
+      <p>A base principal é o arquivo de emendas do Portal da Transparência, da CGU. Ele é baixado inteiro a cada publicação do site e traz três tabelas: a execução de cada emenda, os recebimentos por favorecido e os convênios ligados a elas. Para as transferências especiais ("emendas Pix"), a página de cada emenda também consulta, na hora, a API do Transferegov.br.</p>
+      <ul>
+        <li><strong>Pago:</strong> valor pago no ano da emenda mais os restos a pagar pagos nos anos seguintes.</li>
+        <li><strong>Ainda não pago:</strong> estimativa feita emenda a emenda, igual ao empenhado menos o pago, os restos a pagar pagos e os cancelados. Os "restos a pagar inscritos" não entram, porque o mesmo valor pode ser reinscrito a cada ano.</li>
+        <li><strong>Sem dupla contagem:</strong> recebimentos por favorecido e convênios mostram o caminho do mesmo dinheiro. Eles aparecem na página da emenda, mas nunca são somados aos totais. O valor de um convênio pode incluir contrapartida de quem o assinou.</li>
+        <li><strong>O que a base não tem:</strong> valor autorizado (dotação), órgão executor e ministério. Esses campos aparecem como "não disponível". A dotação está no Siga Brasil, do Senado, que não tem API pública.</li>
+        <li><strong>Autor não é quem paga:</strong> a autoria da emenda, a indicação do destino, a autorização, o empenho e o pagamento são etapas diferentes. O portal mostra quem fez cada uma apenas quando a base informa. Nas emendas de relator, de bancada e de comissão, quem indicou o destino em geral não aparece.</li>
+        <li><strong>Casa e partido:</strong> o arquivo da CGU traz só o nome do autor. O portal cruza esse nome com as listas oficiais de deputados (legislaturas 54 a 57) e senadores (55 a 57). Nomes que aparecem nas duas Casas ficam marcados. O partido é o registrado nessas legislaturas, que pode não ser o da data da emenda.</li>
+        <li><strong>Registros com problema:</strong> linhas sem código de emenda, sem autor, com valores inconsistentes ou presentes só no arquivo de recebimentos são mantidas e marcadas. Nada é apagado.</li>
+        <li><strong>Pessoas físicas:</strong> recebimentos de pessoas físicas aparecem agrupados por município, sem nome nem CPF.</li>
+        <li><strong>Sigilo:</strong> nenhuma das bases consultadas registra sigilo ou restrição formal de acesso. Por isso a situação de acesso aparece como "não verificada". A falta de um documento na internet não é tratada como sigilo.</li>
+        <li><strong>Entrega:</strong> pagamento não prova que a obra ou o serviço foi entregue. O portal mostra o relatório de gestão quando ele existe, mas não verifica a execução física.</li>
+        <li><strong>Mapa:</strong> os valores são agrupados pelo estado da localidade de aplicação informada na emenda. Emendas com destino nacional ou múltiplo ficam fora do mapa e são informadas à parte.</li>
+      </ul>
+
+      <h2 id="verificador">Como funciona o Desmontando Boatos</h2>
+      <p>O verificador não usa inteligência artificial. Ele lê o texto, separa as frases e procura em cada uma o assunto (inflação, desemprego, dívida, gastos, emendas e outros), números, datas, nomes de governos e palavras de comparação, como "subiu", "acima de" ou "maior da história". Depois confere com as séries oficiais já integradas ao portal.</p>
+      <ul>
+        <li><strong>Verdadeiro:</strong> o número ou a direção conferem com o dado oficial, com tolerância pequena para arredondamentos.</li>
+        <li><strong>Parcialmente verdadeiro:</strong> o número é próximo, mas não exato, ou só uma parte do texto confere.</li>
+        <li><strong>Falso:</strong> o dado oficial do período contradiz a frase.</li>
+        <li><strong>Desatualizado:</strong> o número já foi verdade, mas não é o dado mais recente.</li>
+        <li><strong>Enganoso ou fora de contexto:</strong> o número existe, mas em outro período que não o citado.</li>
+        <li><strong>Não comprovado:</strong> não há dado oficial integrado para conferir. Isso não quer dizer que a frase é falsa.</li>
+        <li><strong>Inconclusivo:</strong> acusações de corrupção, crimes ou irregularidades. Elas dependem de processos e decisões que o portal não consulta. O resultado traz os órgãos oficiais onde procurar.</li>
+      </ul>
+      <p>O conteúdo de links de notícias não é lido, porque o navegador não permite acessar outros sites. Para verificar uma notícia, cole o texto dela. O texto pesquisado fica só no endereço da página, depois do símbolo #, e não é enviado a nenhum servidor.</p>
+
       <h2 id="erros">Encontrou um erro?</h2>
-      <p>Compare o número com o link do dado bruto exibido ao lado de cada série. Se houver divergência, registre a página, o período e o valor encontrado na fonte oficial no repositório do projeto. Correções são feitas no código e valem para todos os governos ao mesmo tempo.</p>
+      <p>Compare o número com o link do dado original que aparece ao lado de cada série. Se encontrar diferença, registre no repositório do projeto a página, o período e o valor que você viu na fonte oficial. As correções são feitas no código e valem para todos os governos ao mesmo tempo.</p>
     </div>
   </main>
 </body>

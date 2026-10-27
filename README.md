@@ -10,7 +10,11 @@ Todos os números vêm **exclusivamente de fontes oficiais e primárias** (IBGE,
 
 | Página | O que faz | Fonte |
 |---|---|---|
-| `index.html` | Painel com 11 indicadores-chave, busca e temas | IBGE, BCB |
+| `index.html` | **Desmontando Boatos**: busca para conferir uma afirmação com os dados oficiais | Todas as integradas |
+| `resultado.html#q=…` | Resultado da verificação: classificação, o que foi confirmado ou desmentido, documentos consultados, cronologia e limitações | Todas as integradas |
+| `painel.html` | Painel com 11 indicadores-chave, busca e temas | IBGE, BCB |
+| `emendas.html` | Emendas parlamentares desde 2014: painel de totais, filtros combinados, mapa por estado, comparação, tipos e qualidade dos dados, exportação em CSV | CGU |
+| `emenda.html?id=…` | Uma emenda: quem fez cada etapa, destino, linha do tempo, favorecidos, convênios, documentos e situação de acesso. Para emendas "Pix", consulta ao vivo | CGU, Transferegov.br |
 | `indicador.html` | Explorador de 29 séries: período, mandatos no gráfico, comparação (mesma unidade), estatísticas, tabela, CSV/JSON e **verificação ao vivo na fonte** | IBGE, BCB |
 | `governos.html` | 16 métricas por mandato (FHC 1 → Lula 3) com o mesmo método para todos; clique em um valor para ver o cálculo | IBGE, BCB |
 | `tema.html?t=…` | Pequenos múltiplos por tema; ranking de preços e calculadora da inflação | IBGE, BCB |
@@ -37,6 +41,7 @@ Requer Node.js 18 ou superior. Não há dependências para instalar.
 ```bash
 npm start            # servidor local em http://localhost:8080
 npm run update       # baixa todos os dados das APIs oficiais (~5 min; Selic e dólar são lentos)
+npm run update:emendas  # baixa e processa o arquivo de emendas da CGU (~2 min, usa ~2 GB de memória)
 npm test             # testes das transformações e das regras de atribuição
 ```
 
@@ -71,6 +76,8 @@ tests/                  node:test
 Decisões principais:
 
 - **Dados versionados no Git.** A atualização diária grava os JSON e faz commit. O histórico do repositório mostra quando cada número mudou, inclusive revisões dos próprios órgãos.
+- **Emendas fora do Git.** O arquivo de emendas processado tem cerca de 60 MB e não é versionado (`data/emendas/` está no `.gitignore`). Ele é gerado por `scripts/update-emendas.mjs` a cada publicação. Para rodar a aba de emendas localmente, execute `npm run update:emendas` uma vez.
+- **Verificador por regras.** O Desmontando Boatos (`js/verify/engine.js`) não usa inteligência artificial: reconhece assunto, números, datas, governos e comparações e confere com as séries integradas. Sem dado oficial, o resultado é "não comprovado", nunca "falso".
 - **Nada é inventado.** Se uma API falha, o arquivo anterior é mantido e a falha fica registrada no manifesto e na página inicial.
 - **Neutralidade visual.** Nenhuma cor partidária; mandatos em faixas cinza alternadas; nenhum número pintado de "bom" ou "ruim".
 - **Um eixo por gráfico.** Só é possível comparar indicadores da mesma unidade.

@@ -54,6 +54,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main   # inclui o commit de dados recém-criado
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Baixar e processar emendas parlamentares (CGU)
+        # Os dados de emendas (~60 MB) não ficam no Git: são gerados a cada publicação.
+        # Se a CGU estiver fora do ar, o site é publicado assim mesmo e a aba avisa que os dados estão indisponíveis.
+        continue-on-error: true
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: npm run update:emendas
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

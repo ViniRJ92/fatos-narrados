@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fatos Narrados — dados públicos do Brasil, direto da fonte</title>
-  <meta name="description" content="Portal independente de transparência: inflação, emprego, dívida pública, gastos do governo e comparação entre mandatos, com dados exclusivamente de fontes oficiais (IBGE, Banco Central, Tesouro Nacional).">
-  <meta property="og:title" content="Fatos Narrados">
-  <meta property="og:description" content="Não acredite em narrativas. Verifique os fatos — com dados oficiais.">
+  <title>Desmontando Boatos | Fatos Narrados</title>
+  <meta name="description" content="Antes de compartilhar, confira os fatos. Pesquise notícias, declarações e informações públicas e compare com os dados oficiais do IBGE, Banco Central, Tesouro Nacional e CGU.">
+  <meta property="og:title" content="Desmontando Boatos | Fatos Narrados">
+  <meta property="og:description" content="Antes de compartilhar, confira os fatos.">
   <meta property="og:type" content="website">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,64 +17,37 @@
 </head>
 <body>
   <main id="conteudo" class="wrap">
-    <section class="hero" aria-labelledby="titulo">
-      <div>
-        <div class="page-head" style="margin:0">
-          <p class="kicker">Transparência pública · economia · fiscalização</p>
-          <h1 id="titulo">Não acredite em narrativas. Verifique os fatos.</h1>
-          <p class="lead">Inflação, emprego, renda, dívida, gastos do governo e licitações — com os números oficiais e o link para a consulta original em cada um deles. Os mesmos critérios valem para qualquer governo.</p>
+    <section class="boatos" aria-labelledby="titulo">
+      <h1 id="titulo">Desmontando <span class="b2">Boatos</span></h1>
+      <p class="slogan">"Antes de compartilhar, confira os fatos."</p>
+      <p class="apoio">Pesquise notícias, declarações e informações públicas. Consulte documentos oficiais, verifique evidências e descubra o que realmente foi confirmado.</p>
+
+      <form id="busca" role="search" autocomplete="off">
+        <label for="q" class="sr-only">O que você quer verificar?</label>
+        <div class="searchbox">
+          <textarea id="q" name="q" rows="1" required placeholder="Pesquise uma notícia, declaração, denúncia ou acontecimento..."></textarea>
+          <label class="icon-btn" title="Anexar arquivo de texto (.txt)" style="display:grid;place-items:center;border:0;cursor:pointer">
+            <span aria-hidden="true">📎</span><span class="sr-only">Anexar arquivo de texto</span>
+            <input type="file" id="arquivo" accept=".txt,text/plain,.pdf,.doc,.docx" hidden>
+          </label>
         </div>
-      </div>
-      <div class="search" role="search">
-        <label for="q" class="sr-only">Buscar indicador, tema ou fonte</label>
-        <input id="q" type="search" placeholder="Buscar: inflação, gasolina, dívida, desemprego, licitações…" autocomplete="off"
-               role="combobox" aria-expanded="false" aria-controls="q-results" aria-autocomplete="list">
-        <ul id="q-results" class="search-results" role="listbox" hidden></ul>
-      </div>
-      <div id="freshness"></div>
-    </section>
+        <p id="arquivo-msg" class="muted" style="font-size:.85rem;margin:.5rem 0 0" aria-live="polite"></p>
+        <div class="actions">
+          <button class="btn primary" type="submit">Verificar informação</button>
+          <a class="btn" href="painel.html">Ver indicadores</a>
+        </div>
+      </form>
 
-    <section aria-labelledby="painel">
-      <div class="section-head">
-        <h2 id="painel">Painel do Brasil</h2>
-        <a href="indicador.html">Explorar todos os indicadores →</a>
+      <div class="chips" aria-label="Exemplos de pesquisa">
+        <button type="button" class="chip">A inflação está acima de 10%</button>
+        <button type="button" class="chip">O desemprego caiu no governo Lula 3</button>
+        <button type="button" class="chip">A dívida pública é a maior da história</button>
+        <button type="button" class="chip">A gasolina subiu mais de 20% em 12 meses</button>
+        <button type="button" class="chip">O governo cortou os gastos com educação em 2024</button>
+        <button type="button" class="chip">As emendas parlamentares somaram R$ 47 bilhões em 2025</button>
       </div>
-      <div id="kpis" class="grid kpis" aria-live="polite"></div>
-      <p class="muted" style="margin-top:.8rem;font-size:.85rem">Os cartões mostram o último dado divulgado e o valor de um ano antes, sem juízo de valor. Clique em um cartão para ver a série completa, os governos de cada período e a fonte.</p>
-    </section>
 
-    <section aria-labelledby="comparar">
-      <div class="grid cards">
-        <a class="card" href="governos.html">
-          <p class="kicker muted" style="margin:0 0 .3rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em">Comparação</p>
-          <h3 id="comparar">Como cada governo terminou?</h3>
-          <p class="muted">Inflação, crescimento, desemprego, dívida e contas públicas de FHC a Lula 3, calculados com o mesmo método e com as limitações explicadas.</p>
-        </a>
-        <a class="card" href="gastos.html">
-          <p class="kicker muted" style="margin:0 0 .3rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em">Orçamento</p>
-          <h3>Para onde vai o dinheiro?</h3>
-          <p class="muted">Despesas do Governo Federal por função — saúde, educação, previdência, segurança — em valores nominais ou corrigidos pela inflação.</p>
-        </a>
-        <a class="card" href="fiscalizacao.html">
-          <p class="kicker muted" style="margin:0 0 .3rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em">Fiscalização</p>
-          <h3>Licitações e cota parlamentar</h3>
-          <p class="muted">Consulte, ao vivo, contratações publicadas no PNCP e as despesas de cada deputado federal com a cota parlamentar.</p>
-        </a>
-      </div>
-    </section>
-
-    <section aria-labelledby="temas">
-      <div class="section-head"><h2 id="temas">Temas</h2></div>
-      <div id="topics" class="grid cards"></div>
-    </section>
-
-    <section aria-labelledby="cobertura">
-      <div class="section-head">
-        <h2 id="cobertura">Cobertura do portal</h2>
-        <a href="fontes.html">Ver catálogo de fontes →</a>
-      </div>
-      <div id="coverage"></div>
-      <p class="principle" style="margin-top:1.25rem">“O portal não pede que você acredite em ninguém — nem nele. Cada número leva à fonte oficial para que você confira.”</p>
+      <p class="muted" style="font-size:.84rem;margin-top:2rem;max-width:62ch">A verificação compara o que foi dito com os dados oficiais integrados ao portal. Quando não há dado oficial para conferir, o resultado é "não comprovado", nunca "falso". <a href="metodologia.html#verificador">Como funciona</a>.</p>
     </section>
   </main>
 </body>

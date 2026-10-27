@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node scripts/serve.mjs",
     "update": "node scripts/update-data.mjs",
+    "update:emendas": "node --max-old-space-size=4096 scripts/update-emendas.mjs",
     "test": "node --test"
   },
   "license": "MIT"
