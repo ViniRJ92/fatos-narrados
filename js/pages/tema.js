@@ -12,7 +12,7 @@ const topicId = TOPICS[new URLSearchParams(location.search).get('t')] ? new URLS
 const topic = TOPICS[topicId];
 const inds = INDICATORS.filter(i => i.topic === topicId);
 
-document.title = `${topic.title} — Fatos e Narrativas`;
+document.title = `${topic.title} — Fatos Narrados`;
 $('title').textContent = topic.title;
 $('desc').textContent = topic.desc;
 $('topic-nav').innerHTML = Object.entries(TOPICS).map(([id, t]) =>

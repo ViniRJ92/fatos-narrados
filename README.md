@@ -1,4 +1,4 @@
-# Fatos e Narrativas
+# Fatos Narrados
 
 Portal independente de transparência pública, economia e fiscalização governamental.
 

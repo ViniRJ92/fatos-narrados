@@ -5,7 +5,7 @@
 const cache = new Map();
 
 function base() {
-  // Permite servir o site em subpasta (ex.: GitHub Pages /fatos-e-narrativas/).
+  // Permite servir o site em subpasta (ex.: GitHub Pages /nome-do-repositorio/).
   return new URL('../../', import.meta.url).href;
 }
 

@@ -30,4 +30,4 @@ createServer(async (req, res) => {
   } catch (e) {
     res.writeHead(500).end(String(e));
   }
-}).listen(PORT, () => console.log(`Fatos e Narrativas em http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`Fatos Narrados em http://localhost:${PORT}`));

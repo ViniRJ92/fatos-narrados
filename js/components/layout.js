@@ -32,7 +32,7 @@ export function mountLayout() {
   header.innerHTML = `
     <a class="skip" href="#conteudo">Pular para o conteúdo</a>
     <div class="wrap">
-      <a class="brand" href="index.html" aria-label="Fatos e Narrativas — página inicial">Fatos <span class="amp">e</span> Narrativas</a>
+      <a class="brand" href="index.html" aria-label="Fatos Narrados — página inicial">Fatos Narrados</a>
       <button class="icon-btn menu-btn" aria-expanded="false" aria-controls="nav-principal">Menu</button>
       <nav class="nav" id="nav-principal" aria-label="Principal">
         ${NAV.map(([href, label]) => `<a href="${href}"${href === page ? ' aria-current="page"' : ''}>${label}</a>`).join('')}
@@ -58,7 +58,7 @@ export function mountLayout() {
   footer.innerHTML = `
     <div class="wrap cols">
       <div>
-        <h3>Fatos e Narrativas</h3>
+        <h3>Fatos Narrados</h3>
         <p>Portal independente de transparência pública. Não exige que você acredite em uma narrativa: mostra os números e a fonte oficial de cada um, para que você mesmo verifique.</p>
       </div>
       <div>

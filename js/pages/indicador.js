@@ -73,7 +73,7 @@ async function render() {
   $('cmp').value = state.cmp;
   $('cmp-field').hidden = !comparable.length;
 
-  document.title = `${ind.title} — Fatos e Narrativas`;
+  document.title = `${ind.title} — Fatos Narrados`;
   $('title').textContent = ind.title;
   $('desc').textContent = ind.description;
   $('kicker').textContent = TOPICS[ind.topic].title;
