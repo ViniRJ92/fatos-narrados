@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gastos do Governo Federal por função — Fatos e Narrativas</title>
+  <meta name="description" content="Quanto a União gastou em saúde, educação, previdência, segurança pública e outras funções, ano a ano desde 2015, em valores nominais ou corrigidos pela inflação. Fonte: Tesouro Nacional (SICONFI/RREO).">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/pages/gastos.js"></script>
+</head>
+<body>
+  <main id="conteudo" class="wrap">
+    <header class="page-head">
+      <p class="kicker">Gastos públicos</p>
+      <h1>Para onde vai o dinheiro do Governo Federal</h1>
+      <p class="lead">Despesas efetivamente liquidadas pela União em cada uma das 28 funções de governo, conforme o relatório oficial enviado ao Tesouro Nacional.</p>
+    </header>
+
+    <div class="toolbar">
+      <label class="field"><span>Ano</span><select id="year"></select></label>
+      <div class="field"><span id="mode-label">Valores</span>
+        <div class="seg" id="mode" role="group" aria-labelledby="mode-label">
+          <button type="button" data-mode="real">Corrigidos pela inflação</button>
+          <button type="button" data-mode="nominal">Nominais</button>
+        </div>
+      </div>
+      <button class="btn" id="dl" type="button">Baixar CSV</button>
+    </div>
+
+    <div id="total" style="margin-bottom:16px"></div>
+
+    <div class="layout-2">
+      <div class="card">
+        <h2 style="font-size:1.2rem">Despesa por função</h2>
+        <p class="muted" id="bars-caption" style="font-size:.86rem"></p>
+        <div id="bars"></div>
+        <p class="muted" style="font-size:.8rem;margin-top:.6rem">Clique em uma função para ver sua evolução.</p>
+      </div>
+      <aside>
+        <div class="card">
+          <h2 style="font-size:1.1rem" id="fn-title">Evolução</h2>
+          <label class="field" style="margin-bottom:.6rem"><span>Função</span><select id="fn"></select></label>
+          <div id="line"></div>
+        </div>
+        <div class="source-box" style="margin-top:16px">
+          <p style="margin:0 0 .5rem"><strong>Como ler</strong></p>
+          <ul style="margin:0;padding-left:1.1rem">
+            <li><strong>Encargos Especiais</strong> reúne juros e amortização da dívida e transferências constitucionais a estados e municípios — não é gasto com serviços diretos.</li>
+            <li>O <strong>refinanciamento (rolagem) da dívida</strong> só aparece em alguns anos do relatório; é retirado do total e de Encargos Especiais para manter a comparação.</li>
+            <li>Despesa <strong>liquidada</strong> = serviço entregue/reconhecido; não inclui restos a pagar não processados.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <details class="data-table">
+      <summary>Tabela completa: todas as funções, todos os anos</summary>
+      <div id="table"></div>
+    </details>
+    <p class="muted" id="meta" style="font-size:.84rem;margin-top:1rem"></p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Metodologia — Fatos e Narrativas</title>
+  <meta name="description" content="Princípios editoriais, regras de atribuição de dados a governos, tratamento das séries oficiais, revisões e limitações do portal Fatos e Narrativas.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/pages/metodologia.js"></script>
+</head>
+<body>
+  <main id="conteudo" class="wrap">
+    <header class="page-head">
+      <p class="kicker">Metodologia</p>
+      <h1>Como o portal trabalha</h1>
+      <p class="lead">Regras públicas, aplicadas igualmente a qualquer governo. Se uma regra muda, ela muda para todos — e a mudança fica registrada aqui.</p>
+    </header>
+
+    <div class="prose">
+      <h2 id="principios">Princípios editoriais</h2>
+      <ol>
+        <li><strong>Fatos verificáveis, não narrativas.</strong> Todo número exibido vem de um órgão público oficial e tem link para a consulta original.</li>
+        <li><strong>Mesmo critério para todos.</strong> As métricas por mandato são calculadas por um único código, sem exceções por governo.</li>
+        <li><strong>Neutralidade visual.</strong> O portal não usa cores de partido nem pinta números de “bom” ou “ruim”. Mandatos aparecem em faixas cinza alternadas.</li>
+        <li><strong>Correlação não é causalidade.</strong> Mostrar que um indicador subiu durante um mandato não significa que o governo foi a causa. Os limites estão explicados junto de cada comparação.</li>
+        <li><strong>Nada é inventado.</strong> Se uma fonte falha, o portal mantém o último dado baixado e informa a falha; nunca estima ou preenche lacunas.</li>
+      </ol>
+
+      <h2 id="atribuicao">Atribuição de dados aos governos</h2>
+      <ul>
+        <li><strong>Dados mensais</strong> (inclusive trimestres móveis da PNAD): pertencem ao governo que estava no cargo no <em>último dia do mês</em>. Ex.: maio/2016 é de Temer (assumiu interinamente em 12/05/2016).</li>
+        <li><strong>Dados trimestrais:</strong> governo no cargo no último dia do trimestre.</li>
+        <li><strong>Dados anuais:</strong> governo no cargo em 31 de dezembro. Ex.: 2016 é atribuído a Temer; 1992 a Itamar.</li>
+        <li><strong>Valor herdado:</strong> para variações entre início e fim do mandato, o ponto de partida é a última observação <em>anterior</em> ao primeiro período do mandato.</li>
+        <li><strong>Interinidade:</strong> o período interino conta para quem exercia a Presidência (Itamar a partir de 02/10/1992; Temer a partir de 12/05/2016).</li>
+        <li><strong>Mandatos curtos ou em curso</strong> recebem as marcas “parcial” ou “em curso” e, sempre que possível, uma versão anualizada da métrica.</li>
+      </ul>
+
+      <h2 id="metricas">Métricas da comparação entre governos</h2>
+      <div id="metric-list"></div>
+
+      <h2 id="tratamento">Tratamento das séries</h2>
+      <ul>
+        <li><strong>IPCA por item:</strong> o IBGE publica os subitens em tabelas diferentes conforme a estrutura de pesos (2938: jul/2006–dez/2011; 1419: 2012–2019; 7060: desde 2020). O portal encadeia as variações mensais do mesmo código de subitem e calcula o acumulado em 12 meses.</li>
+        <li><strong>Resultado primário e nominal:</strong> o Banco Central publica a <em>necessidade de financiamento</em> (positivo = déficit). O portal inverte o sinal para que superávit apareça como número positivo. A série original pode ser conferida no link do dado bruto.</li>
+        <li><strong>Séries diárias</strong> (Selic, dólar) são convertidas em mensais: último valor do mês para a meta Selic; média dos dias úteis para o dólar. Datas futuras da meta Selic (vigência até a próxima reunião) são descartadas.</li>
+        <li><strong>PIB anual:</strong> taxa acumulada em quatro trimestres no 4º trimestre (tabela 5932 do IBGE), equivalente à variação anual.</li>
+        <li><strong>Gastos por função:</strong> despesa liquidada até o 6º bimestre no RREO da União (SICONFI). O refinanciamento da dívida, que só aparece em alguns anos do relatório, é retirado para manter a comparabilidade. A correção monetária usa a média anual do IPCA.</li>
+        <li><strong>Valores monetários</strong> do dólar e da balança comercial são nominais. A renda do trabalho já vem deflacionada pelo IBGE.</li>
+      </ul>
+
+      <h2 id="atualizacao">Atualização e revisões</h2>
+      <p>Os dados são baixados por um script (<code>scripts/update-data.mjs</code>) direto das APIs oficiais e gravados com data e hora da consulta. Órgãos como IBGE e Banco Central revisam dados passados (PIB e estatísticas fiscais, principalmente); a cada atualização, o portal adota a versão mais recente publicada pelo órgão. Em qualquer página de indicador, o botão “Verificar na fonte agora” compara o número exibido com a API oficial em tempo real.</p>
+
+      <h2 id="limites">Limitações conhecidas</h2>
+      <ul>
+        <li>A PNAD Contínua começa em 2012: não há taxa de desemprego comparável para mandatos anteriores.</li>
+        <li>A dívida bruta na metodologia atual começa em dez/2006; a dívida líquida, em dez/2001.</li>
+        <li>Os relatórios do SICONFI estão disponíveis a partir de 2015.</li>
+        <li>Preços de combustíveis em reais (ANP) e detalhamento de comércio por produto (Comex Stat) ainda não estão integrados — veja o <a href="fontes.html">catálogo de fontes</a>.</li>
+        <li>Indicadores de estados e municípios, emendas parlamentares, renúncias fiscais, estatais, obras e recuperação judicial estão catalogados e em planejamento.</li>
+      </ul>
+
+      <h2 id="erros">Encontrou um erro?</h2>
+      <p>Compare o número com o link do dado bruto exibido ao lado de cada série. Se houver divergência, registre a página, o período e o valor encontrado na fonte oficial no repositório do projeto. Correções são feitas no código e valem para todos os governos ao mesmo tempo.</p>
+    </div>
+  </main>
+</body>
+</html>

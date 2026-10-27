@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fontes oficiais — Fatos e Narrativas</title>
+  <meta name="description" content="Catálogo das fontes oficiais usadas pelo portal: IBGE, Banco Central, Tesouro Nacional, PNCP, Câmara dos Deputados e outras, com formatos, limitações e situação da integração.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/pages/fontes.js"></script>
+</head>
+<body>
+  <main id="conteudo" class="wrap">
+    <header class="page-head">
+      <p class="kicker">Fontes</p>
+      <h1>De onde vêm os números</h1>
+      <p class="lead">Somente fontes oficiais e primárias. Cada endereço abaixo foi acessado e conferido antes de entrar no catálogo (última verificação: <span id="verified"></span>).</p>
+    </header>
+
+    <section aria-labelledby="h-series">
+      <div class="section-head"><h2 id="h-series">Séries integradas</h2></div>
+      <div id="series"></div>
+    </section>
+
+    <section aria-labelledby="h-cat">
+      <div class="section-head">
+        <h2 id="h-cat">Catálogo de fontes</h2>
+        <label class="field" style="max-width:100%"><span>Situação</span><select id="filter"></select></label>
+      </div>
+      <div id="sources" class="grid cards"></div>
+    </section>
+
+    <section class="prose" aria-labelledby="h-crit">
+      <h2 id="h-crit">Critérios para entrar no catálogo</h2>
+      <ol>
+        <li>O órgão é o produtor oficial do dado (ou o repositório oficial que o publica).</li>
+        <li>O endereço existe e foi acessado; nenhuma URL é presumida.</li>
+        <li>A metodologia está documentada pelo próprio órgão.</li>
+        <li>As limitações (início da série, revisões, mudanças de metodologia) estão registradas aqui.</li>
+        <li>Fontes privadas, de partidos, sindicatos ou associações não são usadas para indicadores, mesmo quando confiáveis.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiscalização — licitações e cota parlamentar — Fatos e Narrativas</title>
+  <meta name="description" content="Consulte ao vivo licitações, dispensas e contratações publicadas no PNCP e as despesas de cada deputado federal com a cota parlamentar, direto das APIs oficiais.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/pages/fiscalizacao.js"></script>
+</head>
+<body>
+  <main id="conteudo" class="wrap">
+    <header class="page-head">
+      <p class="kicker">Fiscalização</p>
+      <h1>Fiscalize você mesmo</h1>
+      <p class="lead">Estas consultas são feitas agora, do seu navegador direto para as APIs oficiais. O portal não armazena nem altera o resultado.</p>
+    </header>
+
+    <section id="pncp" aria-labelledby="h-pncp">
+      <h2 id="h-pncp">Licitações e contratações públicas (PNCP)</h2>
+      <p class="muted">Contratações de órgãos federais, estaduais e municipais publicadas no Portal Nacional de Contratações Públicas (Lei 14.133/2021).</p>
+      <form id="p-form" class="toolbar card" style="margin-bottom:1rem">
+        <label class="field"><span>De</span><input type="date" id="p-from" required></label>
+        <label class="field"><span>Até</span><input type="date" id="p-to" required></label>
+        <label class="field"><span>Modalidade</span><select id="p-mod"></select></label>
+        <label class="field"><span>UF</span><select id="p-uf"></select></label>
+        <label class="field"><span>Filtrar nesta página</span><input type="search" id="p-q" placeholder="ex.: merenda, asfalto"></label>
+        <button class="btn primary" id="p-go" type="submit">Consultar PNCP</button>
+      </form>
+      <div id="p-out" aria-live="polite"><p class="muted">Escolha os filtros e clique em “Consultar PNCP”.</p></div>
+    </section>
+
+    <section id="camara" aria-labelledby="h-camara">
+      <h2 id="h-camara">Cota parlamentar dos deputados federais</h2>
+      <p class="muted">A Cota para o Exercício da Atividade Parlamentar (CEAP) reembolsa despesas como passagens, combustível, divulgação e escritório. Cada nota fiscal é pública.</p>
+      <form id="c-form" class="toolbar card" style="margin-bottom:1rem">
+        <label class="field"><span>Nome do deputado</span><input type="search" id="c-name" placeholder="parte do nome"></label>
+        <label class="field"><span>UF</span><select id="c-uf"></select></label>
+        <label class="field"><span>Ano</span><select id="c-year"></select></label>
+        <button class="btn primary" type="submit">Buscar</button>
+      </form>
+      <div id="c-list" aria-live="polite"></div>
+      <div id="c-out" aria-live="polite" style="margin-top:1rem"></div>
+    </section>
+
+    <section aria-labelledby="h-mais">
+      <h2 id="h-mais">Outras fontes para fiscalizar</h2>
+      <div class="grid cards">
+        <a class="card" href="https://portaldatransparencia.gov.br/" target="_blank" rel="noopener"><h3>Portal da Transparência</h3><p class="muted">Emendas parlamentares, transferências, servidores e contratos federais (CGU).</p></a>
+        <a class="card" href="https://www12.senado.leg.br/orcamento/sigabrasil" target="_blank" rel="noopener"><h3>Siga Brasil</h3><p class="muted">Execução detalhada do orçamento federal (Senado Federal).</p></a>
+        <a class="card" href="https://www.gov.br/transferegov/pt-br" target="_blank" rel="noopener"><h3>Transferegov.br</h3><p class="muted">Convênios e transferências a estados e municípios.</p></a>
+        <a class="card" href="https://portal.tcu.gov.br/" target="_blank" rel="noopener"><h3>TCU</h3><p class="muted">Auditorias, contas do governo e obras com indícios de irregularidade.</p></a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

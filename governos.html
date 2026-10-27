@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparação entre governos — Fatos e Narrativas</title>
+  <meta name="description" content="Inflação, crescimento do PIB, desemprego, renda, dívida pública, resultado primário, juros, câmbio e balança comercial por mandato presidencial, de FHC a Lula 3, com o mesmo método para todos.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/pages/governos.js"></script>
+</head>
+<body>
+  <main id="conteudo" class="wrap">
+    <header class="page-head">
+      <p class="kicker">Comparação</p>
+      <h1>Os números de cada governo</h1>
+      <p class="lead">Mesmas séries oficiais, mesmo método de cálculo, para todos os mandatos desde 1995. Clique em qualquer número para ver de onde ele saiu.</p>
+    </header>
+
+    <details class="card" style="margin-bottom:1.5rem" open>
+      <summary style="cursor:pointer;font-weight:650">Antes de comparar: o que estes números não dizem</summary>
+      <ul style="margin:.8rem 0 0;padding-left:1.2rem;font-size:.93rem;color:var(--ink-2)">
+        <li><strong>Defasagem:</strong> decisões de um governo costumam produzir efeito nos anos seguintes — inclusive no mandato de quem veio depois.</li>
+        <li><strong>Choques externos:</strong> crises globais (2008), a pandemia (2020), preços internacionais de petróleo e alimentos e o câmbio afetam todos os indicadores, independentemente de quem governa.</li>
+        <li><strong>Outros Poderes:</strong> orçamento é aprovado pelo Congresso; juros são decididos pelo Banco Central, autônomo desde a Lei Complementar 179/2021.</li>
+        <li><strong>Durações diferentes:</strong> Dilma 2 durou 16 meses e Temer 32. Por isso a tabela traz médias anuais além de acumulados.</li>
+        <li><strong>Atribuição por data:</strong> cada mês pertence ao governo no cargo no último dia do mês; cada ano, ao governo no cargo em 31/12. Veja a <a href="metodologia.html#atribuicao">metodologia</a>.</li>
+      </ul>
+    </details>
+
+    <div class="section-head">
+      <h2>Tabela comparativa</h2>
+      <button class="btn" id="dl" type="button">Baixar CSV</button>
+    </div>
+    <div id="matrix" aria-live="polite"></div>
+    <p class="muted" style="font-size:.84rem;margin-top:.6rem">“parcial”: a série oficial começa depois da posse. “em curso”: mandato ainda não terminou. “—”: não há dado oficial comparável para o período. Mandatos anteriores a 1995 aparecem nos gráficos, mas não na tabela: as séries consistentes começam com o Plano Real.</p>
+
+    <section id="detail" class="layout-2" style="margin-top:2rem">
+      <div class="card">
+        <h2 id="metric-title" style="font-size:1.3rem"></h2>
+        <p id="metric-explain" class="muted" style="font-size:.92rem"></p>
+        <div id="bars"></div>
+        <p class="muted" style="font-size:.8rem;margin-top:.6rem">* mandato em curso · † cobertura parcial</p>
+      </div>
+      <aside class="card" id="calc" aria-live="polite"></aside>
+    </section>
+  </main>
+</body>
+</html>

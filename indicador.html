@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indicadores — Fatos e Narrativas</title>
+  <meta name="description" content="Explore séries oficiais de inflação, emprego, renda, PIB, dívida pública, juros, câmbio e comércio exterior, com os mandatos presidenciais marcados no gráfico e link para o dado bruto.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/pages/indicador.js"></script>
+</head>
+<body>
+  <main id="conteudo" class="wrap">
+    <header class="page-head">
+      <p class="kicker" id="kicker">Indicadores</p>
+      <h1 id="title">Explorador de indicadores</h1>
+      <p class="lead" id="desc">Escolha um indicador oficial, o período e, se quiser, compare com outro da mesma unidade.</p>
+    </header>
+
+    <div class="toolbar" role="group" aria-label="Opções do gráfico">
+      <label class="field"><span>Indicador</span><select id="ind"></select></label>
+      <div class="field"><span id="ranges-label">Período</span>
+        <div class="seg" id="ranges" role="group" aria-labelledby="ranges-label">
+          <button type="button" data-range="5a">5 anos</button>
+          <button type="button" data-range="10a">10 anos</button>
+          <button type="button" data-range="20a">20 anos</button>
+          <button type="button" data-range="real">Desde 1995</button>
+          <button type="button" data-range="all">Tudo</button>
+          <button type="button" data-range="gov">Um mandato</button>
+        </div>
+      </div>
+      <label class="field" id="gov-field" hidden><span>Mandato</span><select id="gov"></select></label>
+      <label class="field" id="cmp-field"><span>Comparar com</span><select id="cmp"></select></label>
+      <label class="check"><input type="checkbox" id="bands" checked> Mostrar mandatos</label>
+    </div>
+
+    <div class="layout-2">
+      <div>
+        <div class="card">
+          <div id="chart" aria-live="polite"></div>
+          <div class="chart-foot">
+            <span id="chart-unit"></span>
+            <span>Faixas cinza = mandatos presidenciais. Passe o mouse ou use as setas do teclado.</span>
+          </div>
+        </div>
+        <div id="stats" style="margin-top:16px"></div>
+        <details class="data-table">
+          <summary>Ver tabela de dados</summary>
+          <div id="table"></div>
+        </details>
+      </div>
+      <aside>
+        <div class="card">
+          <h2 style="font-size:1.1rem">Confira você mesmo</h2>
+          <p class="muted" style="font-size:.9rem">Consulte a API oficial agora, direto do seu navegador, e compare com o valor mostrado aqui.</p>
+          <button class="btn primary" id="verify" type="button">Verificar na fonte agora</button>
+          <p id="verify-result" class="verify-result" aria-live="polite"></p>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+            <button class="btn" id="dl-csv" type="button">Baixar CSV</button>
+            <button class="btn" id="dl-json" type="button">Baixar JSON</button>
+          </div>
+        </div>
+        <div style="margin-top:16px" id="source"></div>
+        <div style="margin-top:16px" id="notes"></div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
