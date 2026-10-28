@@ -2,6 +2,7 @@ import { mountLayout } from '../components/layout.js';
 import { loadSeries, loadData } from '../core/data.js';
 import { verify, CLASSES } from '../verify/engine.js';
 import { expandYear } from '../data/emendas-model.js';
+import { getJSON } from '../api/official.js';
 import { fmtDateTime, html, raw } from '../core/format.js';
 
 mountLayout();
@@ -14,6 +15,8 @@ const ctx = {
   spending: () => loadSeries('despesas-funcao'),
   emendasMeta,
   emendasYear: async ano => expandYear(await loadData(`emendas/ano-${ano}.json`), (await emendasMeta()).autores),
+  emendasDet: ano => loadData(`emendas/det-${ano}.json`),
+  getJSON: url => getJSON(url, { timeout: 30000, retries: 2 }),
   today: new Date(),
 };
 
@@ -36,7 +39,7 @@ async function run() {
   const text = readHash();
   $('q').value = text;
   if (!text.trim()) { $('app').innerHTML = '<p class="muted">Digite ou cole o que você quer verificar.</p>'; return; }
-  $('app').innerHTML = '<p class="loading">Consultando os dados oficiais…</p>';
+  $('app').innerHTML = '<p class="loading">Consultando os dados oficiais… Perguntas sobre parlamentares consultam a Câmara e o Senado na hora e podem levar até um minuto.</p>';
   const r = await verify(text, ctx);
 
   // agrupa os achados por classificação

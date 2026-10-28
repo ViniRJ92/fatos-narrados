@@ -13,6 +13,7 @@ import { GOVERNMENTS, governmentForPeriod } from '../data/governments.js';
 import { compound } from '../data/transforms.js';
 import { rawUrl } from '../api/official.js';
 import { EMENDAS_SOURCES } from '../data/emendas-catalog.js';
+import { checkPolitica, hasPoliticsCue } from './politica.js';
 
 export const CLASSES = {
   verdadeiro: 'Verdadeiro',
@@ -24,7 +25,7 @@ export const CLASSES = {
   inconclusivo: 'Inconclusivo',
 };
 
-export const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+export const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const fmt = (v, d = 1) => (v == null || !Number.isFinite(v) ? '—' : v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }));
 const MESES = ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 const MES_CURTO = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -71,7 +72,7 @@ function govsIn(t) {
 export function parseNumbers(t) {
   const pct = [...t.matchAll(/(-?\d+(?:[.,]\d+)?)\s*(%|por cento|pontos percentuais|p\.p\.)/g)].map(m => Number(m[1].replace(',', '.')));
   const money = [];
-  for (const m of t.matchAll(/(?:r\$\s*)?(\d+(?:[.,]\d+)*)\s*(mil|milhoes|milhao|bilhoes|bilhao|bi\b|tri|trilhoes|trilhao|mi\b)?\s*(de reais|reais)?/g)) {
+  for (const m of t.matchAll(/(?:r\$\s*)?(\d+(?:[.,]\d+)*)\s*(milhoes|milhao|mil|bilhoes|bilhao|trilhoes|trilhao|tri|bi|mi)?\b\s*(de reais|reais)?/g)) {
     if (!m[0].includes('r$') && !m[3] && !(m[2] && /r\$|reais/.test(t))) continue;
     const raw = m[1].includes(',') ? m[1].replace(/\./g, '').replace(',', '.') : (m[2] ? m[1] : m[1].replace(/\./g, ''));
     let v = Number(raw);
@@ -295,31 +296,105 @@ async function checkEmendas(t, ctx) {
   const ev = [{ label: 'Emendas parlamentares (CGU, Portal da Transparência)', url: EMENDAS_SOURCES.cgu.page, fetchedAt: meta?.updatedAt }];
   if (!meta) return { status: 'nao-comprovado', finding: 'Os dados de emendas não estão disponíveis agora.', evidence: ev };
   const n = parseNumbers(t);
-  const anos = n.years.filter(y => meta.totals[y]);
-  const ano = anos.at(-1) || meta.years.map(y => y.ano).filter(y => y < String(ctx.today.getFullYear())).at(-1);
-  // autor citado pelo nome (2+ palavras para evitar coincidências)
-  const autores = meta.autores.filter(a => a[1] && a[1].split(' ').length >= 2 && !/^SEM INFORMA/.test(a[1]) && t.includes(norm(a[1])));
-  const pagoWords = /pag|liber|receb|repass/.test(t);
-  if (autores.length) {
-    const year = await ctx.emendasYear(ano).catch(() => []);
-    const mine = year.filter(e => autores.some(a => a[1] === e.autor.nome));
-    const emp = mine.reduce((s, e) => s + e.v[0], 0), pago = mine.reduce((s, e) => s + e.pago, 0);
-    const base = `Em ${ano}, ${autores.map(a => a[1]).join(', ')} aparece(m) como autor(es) de ${mine.length} emenda(s): R$ ${fmt(emp / 1e6)} milhões empenhados e R$ ${fmt(pago / 1e6)} milhões pagos.`;
-    if (n.money.length) {
-      const v = pagoWords ? pago : emp;
-      const c = close(v, n.money[0], false);
-      return { status: c === 'exato' ? 'verdadeiro' : c === 'aproximado' ? 'parcial' : 'falso', finding: `${base} A alegação fala em R$ ${fmt(n.money[0] / 1e6)} milhões (comparado com o valor ${pagoWords ? 'pago' : 'empenhado'}).`, evidence: ev, link: `emendas.html?anos=${ano}&autor=${encodeURIComponent(autores[0][1])}` };
+  const all = meta.years.map(y => y.ano);
+  const lastFull = all.filter(y => y < String(ctx.today.getFullYear())).at(-1);
+  // anos citados; dois ou mais viram um intervalo ("de 2020 a 2023")
+  const cited = n.years.filter(y => all.includes(y));
+  const anos = cited.length >= 2 ? all.filter(y => y >= cited[0] && y <= cited.at(-1)) : cited.length ? cited : [lastFull];
+  const periodo = anos.length > 1 ? `de ${anos[0]} a ${anos.at(-1)}` : `em ${anos[0]}`;
+  const grupo = EMENDA_TIPO.find(([re]) => re.test(t))?.[1] || null;
+  const pagoWords = /pag|liber|receb|repass|transferi/.test(t);
+  // autor: nomes compostos; nome de uma palavra só se vier depois de "deputado"/"senador"
+  const autores = meta.autores.filter(a => {
+    if (!a[1] || /^SEM INFORMA/.test(a[1])) return false;
+    const nn = norm(a[1]);
+    return nn.includes(' ') ? new RegExp(`\\b${escapeRe(nn)}\\b`).test(t) : new RegExp(`(deputad[oa]|senador[a]?) ${escapeRe(nn)}\\b`).test(t);
+  });
+  const lists = await Promise.all(anos.map(y => ctx.emendasYear(y).catch(() => [])));
+  let sel = lists.flat();
+  if (autores.length) sel = sel.filter(e => autores.some(a => a[1] === e.autor.nome));
+  if (grupo) sel = sel.filter(e => e.grupo === grupo);
+
+  // destino: município (nome da localidade "CIDADE - UF") ou estado
+  const destino = findDestino(t, sel);
+  let emp = 0, pago = 0, recebido = 0;
+  const ids = new Set();
+  for (const e of sel) {
+    for (const p of e.parts) {
+      if (destino && !(destino.mun ? norm(p.loc) === destino.key : p.uf === destino.uf)) continue;
+      emp += p.v[0]; pago += p.v[2] + p.v[5]; ids.add(`${e.ano}|${e.id}`);
     }
-    return { status: null, finding: base, evidence: ev, link: `emendas.html?anos=${ano}&autor=${encodeURIComponent(autores[0][1])}` };
   }
-  const tot = meta.totals[ano];
-  const base = `Em ${ano}, as emendas somaram R$ ${fmt(tot.v[0] / 1e9)} bilhões empenhados e R$ ${fmt(tot.pago / 1e9)} bilhões pagos (inclui restos a pagar pagos depois), em ${tot.n} registros.`;
+  // emendas "Pix" e de destino múltiplo: o município aparece em quem recebeu, não na localidade
+  if (destino && ctx.emendasDet) {
+    for (const ano of anos) {
+      const det = await ctx.emendasDet(ano).catch(() => null);
+      if (!det) continue;
+      for (const e of sel.filter(x => x.ano === ano)) {
+        for (const [fi, total] of det.fav[e.id] || []) {
+          const f = det.favs[fi];
+          const ok = destino.mun ? norm(f?.[5]) === destino.munName && (!destino.uf || f?.[4] === destino.uf) : f?.[4] === destino.uf;
+          if (ok) { recebido += total; ids.add(`${e.ano}|${e.id}`); }
+        }
+      }
+    }
+  }
+  const quem = autores.length ? autores.map(a => a[1]).join(', ') : 'Todos os autores';
+  const filtros = [grupo ? `tipo ${GRUPO_LABEL[grupo]}` : '', destino ? `destino ${destino.label}` : ''].filter(Boolean).join(', ');
+  const base = `${quem} ${periodo}${filtros ? ` (${filtros})` : ''}: ${ids.size} emenda(s), ${money(emp)} empenhados e ${money(pago)} pagos${destino ? `; recebimentos de favorecidos em ${destino.label}: ${money(recebido)}` : ''}.`;
+  const link = `emendas.html?anos=${anos.length > 1 ? 'todos' : anos[0]}${autores.length ? `&autor=${encodeURIComponent(autores[0][1])}` : ''}${destino?.mun ? `&municipio=${encodeURIComponent(destino.munName)}` : destino?.uf ? `&uf=${destino.uf}` : ''}`;
+  const notes = [];
+  if (!cited.length) notes.push(`Sem ano na frase, foi usado ${lastFull}, o último ano completo.`);
+  if (pagoWords) notes.push('Pago inclui restos a pagar pagos nos anos seguintes.');
+  const finding = `${base} ${notes.join(' ')}`.trim();
+
   if (n.money.length) {
-    const v = pagoWords ? tot.pago : tot.v[0];
-    const c = close(v, n.money[0], false);
-    return { status: c === 'exato' ? 'verdadeiro' : c === 'aproximado' ? 'parcial' : 'falso', finding: `${base} A alegação fala em R$ ${fmt(n.money[0] / 1e9)} bilhões.`, evidence: ev, link: `emendas.html?anos=${ano}` };
+    const v = pagoWords ? Math.max(pago, recebido) : emp;
+    const cmp = comparator(t);
+    const status = cmp === '>' ? (v > n.money[0] ? 'verdadeiro' : 'falso') : cmp === '<' ? (v < n.money[0] ? 'verdadeiro' : 'falso')
+      : (c => (c === 'exato' ? 'verdadeiro' : c === 'aproximado' ? 'parcial' : 'falso'))(close(v, n.money[0], false));
+    return { status, finding: `${finding} A alegação fala em ${cmp === '>' ? 'mais de ' : cmp === '<' ? 'menos de ' : ''}${money(n.money[0])} (comparado com o valor ${pagoWords ? 'pago ou recebido' : 'empenhado'}).`, evidence: ev, link };
   }
-  return { status: null, finding: base, evidence: ev, link: `emendas.html?anos=${ano}` };
+  if (autores.length && destino) {
+    // afirmação de existência: "X mandou emendas para Y"
+    const negou = /nao (destinou|mandou|enviou)|nenhuma emenda/.test(t);
+    const tem = ids.size > 0;
+    const status = negou ? (tem ? 'falso' : cited.length ? 'verdadeiro' : 'nao-comprovado') : tem ? 'verdadeiro' : cited.length ? 'falso' : 'nao-comprovado';
+    return { status, finding, evidence: ev, link };
+  }
+  return { status: null, finding, evidence: ev, link };
+}
+
+const EMENDA_TIPO = [[/pix|transferencia especial/, 'pix'], [/bancada/, 'bancada'], [/comissao/, 'comissao'], [/relator/, 'relator'], [/individua/, 'individual']];
+const GRUPO_LABEL = { pix: 'transferência especial ("Pix")', bancada: 'bancada', comissao: 'comissão', relator: 'relator-geral', individual: 'individual' };
+const UF_NOMES = { acre: 'AC', alagoas: 'AL', amapa: 'AP', amazonas: 'AM', bahia: 'BA', ceara: 'CE', 'distrito federal': 'DF', 'espirito santo': 'ES', goias: 'GO', maranhao: 'MA',
+  'mato grosso do sul': 'MS', 'mato grosso': 'MT', 'minas gerais': 'MG', para: 'PA', paraiba: 'PB', parana: 'PR', pernambuco: 'PE', piaui: 'PI', 'rio de janeiro': 'RJ',
+  'rio grande do norte': 'RN', 'rio grande do sul': 'RS', rondonia: 'RO', roraima: 'RR', 'santa catarina': 'SC', 'sao paulo': 'SP', sergipe: 'SE', tocantins: 'TO' };
+const UF_LABEL = { AC: 'Acre', AL: 'Alagoas', AP: 'Amapá', AM: 'Amazonas', BA: 'Bahia', CE: 'Ceará', DF: 'Distrito Federal', ES: 'Espírito Santo', GO: 'Goiás', MA: 'Maranhão',
+  MS: 'Mato Grosso do Sul', MT: 'Mato Grosso', MG: 'Minas Gerais', PA: 'Pará', PB: 'Paraíba', PR: 'Paraná', PE: 'Pernambuco', PI: 'Piauí', RJ: 'Rio de Janeiro',
+  RN: 'Rio Grande do Norte', RS: 'Rio Grande do Sul', RO: 'Rondônia', RR: 'Roraima', SC: 'Santa Catarina', SP: 'São Paulo', SE: 'Sergipe', TO: 'Tocantins' };
+const money = v => (Math.abs(v) >= 1e9 ? `R$ ${fmt(v / 1e9)} bilhões` : `R$ ${fmt(v / 1e6)} milhões`);
+const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** Município ("para Macapá", "em Campinas") ou estado ("no Amapá", "estado de São Paulo") citado no texto. */
+function findDestino(t, list) {
+  const muns = new Map();
+  for (const e of list) for (const p of e.parts) {
+    const m = p.loc && p.loc.match(/^(.+) - ([A-Z]{2})$/);
+    if (m) muns.set(norm(p.loc), { mun: true, key: norm(p.loc), munName: norm(m[1]), uf: m[2], label: p.loc });
+  }
+  for (const e of list) for (const i of e.favIdx) {
+    const f = e.favs[i];
+    if (f?.[4] && f?.[3]) { const key = norm(`${f[4]} - ${f[3]}`); if (!muns.has(key)) muns.set(key, { mun: true, key, munName: norm(f[4]), uf: f[3], label: `${f[4]} - ${f[3]}` }); }
+  }
+  // o nome do município precisa vir depois de uma preposição de destino, para não confundir com nomes de pessoas
+  const hits = [...muns.values()].filter(m => m.munName.length >= 4 && new RegExp(`\\b(para|em|de|ao|a|no|na)\\s+(o |a )?(municipio de |cidade de )?${escapeRe(m.munName)}\\b`).test(t));
+  // estado citado explicitamente vence quando o nome também é de município (ex.: "São Paulo")
+  const ufName = Object.keys(UF_NOMES).sort((a, b) => b.length - a.length).find(k => new RegExp(`\\b(estado d[eoa]s?|no|na|para o|para a|ao)\\s+${k}\\b`).test(t));
+  if (ufName && (/estado/.test(t) || !hits.length)) return { mun: false, uf: UF_NOMES[ufName], label: UF_LABEL[UF_NOMES[ufName]] };
+  if (!hits.length) return null;
+  hits.sort((a, b) => b.munName.length - a.munName.length);
+  return hits[0];
 }
 
 // ---------------------------------------------------------------- orquestração
@@ -335,13 +410,23 @@ export async function verify(text, ctx) {
   for (const sentence of claims) {
     const t = norm(sentence);
     const checks = [];
+    let politica = false;
     if (/emenda/.test(t)) checks.push(await checkEmendas(t, ctx));
-    const fnKey = Object.keys(FN_WORDS).find(k => t.includes(k));
-    if (fnKey && /gast|despes|investi|aplic|orcamento|verba|corte/.test(t) && !/plano de saude/.test(t)) checks.push(await checkSpending(t, FN_WORDS[fnKey], ctx));
-    else if (!/emenda/.test(t)) {
-      const topic = TOPICS.find(([re]) => re.test(t));
-      if (topic) checks.push(await checkIndicator(sentence, t, topic[1], ctx));
+    else if (hasPoliticsCue(t) && ctx.getJSON) {
+      const pol = await checkPolitica(sentence, t, parseNumbers(t), ctx)
+        .catch(() => [{ status: 'nao-comprovado', finding: 'As APIs da Câmara e do Senado não responderam agora. Tente de novo em alguns minutos.', evidence: [] }]);
+      checks.push(...pol);
+      politica = pol.length > 0;
     }
+    if (!/emenda/.test(t) && !politica) {
+      const fnKey = Object.keys(FN_WORDS).find(k => t.includes(k));
+      if (fnKey && /gast|despes|investi|aplic|orcamento|verba|corte/.test(t) && !/plano de saude/.test(t)) checks.push(await checkSpending(t, FN_WORDS[fnKey], ctx));
+      else {
+        const topic = TOPICS.find(([re]) => re.test(t));
+        if (topic) checks.push(await checkIndicator(sentence, t, topic[1], ctx));
+      }
+    }
+    if (politica) results.politica = true;
     const sensitive = SENSITIVE.test(t);
     const classified = checks.filter(c => c.status);
     let status = classified.length ? (classified.every(c => c.status === classified[0].status) ? classified[0].status : 'parcial') : (sensitive ? 'inconclusivo' : 'nao-comprovado');
@@ -360,11 +445,12 @@ export async function verify(text, ctx) {
   else overall = 'parcial';
 
   const limitations = [
-    'A verificação é automática e só confere números com as séries oficiais integradas ao portal (IBGE, Banco Central, Tesouro Nacional e CGU). Ironia, contexto e intenção não são avaliados.',
+    'A verificação é automática e só confere o que existe nas bases oficiais integradas ao portal (IBGE, Banco Central, Tesouro Nacional, CGU, Câmara e Senado). Ironia, contexto e intenção não são avaliados.',
     'Quando não há dado oficial para conferir, a alegação fica como não comprovada ou inconclusiva. Isso não quer dizer que seja falsa.',
   ];
   if (urls.length) limitations.push('Links foram identificados, mas o conteúdo das páginas não é lido: o navegador não permite acessar sites de notícias de outro domínio. Copie e cole o texto da notícia para conferir as afirmações.');
   if (results.some(r => r.sensitive)) limitations.push('Acusações de corrupção, crimes ou irregularidades dependem de processos e decisões oficiais. O portal não consulta processos judiciais nem investigações e não trata suspeita como condenação.');
+  if (results.politica) limitations.push('Votos: só contam votações nominais de plenário (texto-base e turnos); votações simbólicas não registram o voto de cada parlamentar. Partido: vale o mais recente nas listas oficiais. Cota parlamentar: só deputados federais.');
   if (results.some(r => r.checks.some(c => c.note))) limitations.push('Mudanças durante um mandato não provam que o governo foi a causa: há efeitos defasados, crises externas e decisões de outros Poderes.');
 
   const where = [

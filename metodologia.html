@@ -92,6 +92,18 @@
         <li><strong>Não comprovado:</strong> não há dado oficial integrado para conferir. Isso não quer dizer que a frase é falsa.</li>
         <li><strong>Inconclusivo:</strong> acusações de corrupção, crimes ou irregularidades. Elas dependem de processos e decisões que o portal não consulta. O resultado traz os órgãos oficiais onde procurar.</li>
       </ul>
+      <h3>Perguntas sobre parlamentares, projetos e presidentes</h3>
+      <p>Estas consultas são feitas na hora, nas APIs oficiais da Câmara e do Senado:</p>
+      <ul>
+        <li><strong>Votos:</strong> "o deputado X votou a favor da PEC 45/2019". Contam só as votações nominais de plenário do texto principal (turnos, substitutivo, emenda aglutinativa). Destaques, requerimentos e votações simbólicas ficam de fora. Se o nome não aparece na lista de votos, o resultado é "não comprovado": a pessoa pode ter faltado ou não ser parlamentar na época.</li>
+        <li><strong>Situação de projetos:</strong> "o PL 2630/2020 foi aprovado", "virou lei", "foi arquivado". Usa a situação registrada na Câmara e as votações das duas Casas. Aprovação em só uma Casa aparece como parcialmente verdadeira.</li>
+        <li><strong>Autoria:</strong> confere a lista oficial de autores da proposição.</li>
+        <li><strong>Cota parlamentar:</strong> soma os reembolsos de um deputado federal no ano citado, no total ou por tipo (combustível, passagens, divulgação e outros). A cota dos senadores ainda não está integrada.</li>
+        <li><strong>Partido:</strong> compara com o partido mais recente nas listas oficiais. Trocas de partido ao longo do mandato não aparecem.</li>
+        <li><strong>Mandatos presidenciais:</strong> datas de posse, afastamento e fim de mandato de Sarney a Lula 3.</li>
+        <li><strong>Emendas:</strong> valores por autor, ano ou intervalo de anos, tipo (por exemplo, Pix) e destino (município ou estado). Para o destino, o portal soma a localidade de aplicação da emenda e também os recebimentos de favorecidos naquele local, porque nas emendas Pix o município aparece em quem recebeu.</li>
+      </ul>
+      <p>A API da Câmara limita consultas em sequência. Por isso o portal espaça os pedidos e tenta de novo quando é recusado, e a resposta pode levar até um minuto. Se mesmo assim a API não responder, o resultado é "não comprovado", nunca "falso".</p>
       <p>O conteúdo de links de notícias não é lido, porque o navegador não permite acessar outros sites. Para verificar uma notícia, cole o texto dela. O texto pesquisado fica só no endereço da página, depois do símbolo #, e não é enviado a nenhum servidor.</p>
 
       <h2 id="erros">Encontrou um erro?</h2>
