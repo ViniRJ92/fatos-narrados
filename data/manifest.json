@@ -2,7 +2,7 @@
   "series": {
     "ipca-12m": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1980-12",
       "last": "2026-09",
       "lastValue": 4.58,
@@ -10,7 +10,7 @@
     },
     "ipca-mensal": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1980-01",
       "last": "2026-09",
       "lastValue": 0.82,
@@ -18,7 +18,7 @@
     },
     "ipca-alimentacao-domicilio": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 4.1854,
@@ -26,7 +26,7 @@
     },
     "ipca-arroz": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": -2.6089,
@@ -34,7 +34,7 @@
     },
     "ipca-carnes": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 9.8291,
@@ -42,7 +42,7 @@
     },
     "ipca-cafe": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": -17.8015,
@@ -50,7 +50,7 @@
     },
     "ipca-gasolina": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 5.5982,
@@ -58,7 +58,7 @@
     },
     "ipca-diesel": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 14.3571,
@@ -66,7 +66,7 @@
     },
     "ipca-etanol": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": -3.1914,
@@ -74,7 +74,7 @@
     },
     "ipca-gas-botijao": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 3.5892,
@@ -82,7 +82,7 @@
     },
     "ipca-energia": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 2.7563,
@@ -90,7 +90,7 @@
     },
     "ipca-aluguel": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 4.716,
@@ -98,7 +98,7 @@
     },
     "ipca-plano-saude": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 5.6932,
@@ -106,7 +106,7 @@
     },
     "ipca-onibus": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2007-06",
       "last": "2026-09",
       "lastValue": 4.3627,
@@ -114,7 +114,7 @@
     },
     "desocupacao": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2012-03",
       "last": "2026-08",
       "lastValue": 5.3,
@@ -122,7 +122,7 @@
     },
     "rendimento-real": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2012-03",
       "last": "2026-08",
       "lastValue": 3777,
@@ -130,7 +130,7 @@
     },
     "pib-4t": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1996-03",
       "last": "2026-06",
       "lastValue": 1.9,
@@ -138,7 +138,7 @@
     },
     "ibc-br": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2003-01",
       "last": "2026-08",
       "lastValue": 110.40624,
@@ -146,7 +146,7 @@
     },
     "divida-bruta": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2006-12",
       "last": "2026-08",
       "lastValue": 82.87,
@@ -154,7 +154,7 @@
     },
     "divida-liquida": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2001-12",
       "last": "2026-08",
       "lastValue": 69.27,
@@ -162,7 +162,7 @@
     },
     "resultado-primario": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2002-11",
       "last": "2026-08",
       "lastValue": -0.62,
@@ -170,39 +170,41 @@
     },
     "resultado-nominal": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2002-11",
-      "last": "2026-08",
-      "lastValue": -9.48,
-      "count": 286
+      "last": "2026-09",
+      "lastValue": -9.51,
+      "count": 287
     },
     "juros-nominais": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2002-11",
-      "last": "2026-08",
-      "lastValue": 8.86,
-      "count": 286
+      "last": "2026-09",
+      "lastValue": 8.99,
+      "count": 287
     },
     "selic": {
-      "ok": true,
+      "ok": false,
       "fetchedAt": "2026-10-28T16:58:02.596Z",
       "first": "1999-03",
       "last": "2026-10",
       "lastValue": 13.75,
-      "count": 332
+      "count": 332,
+      "error": "Resposta não-JSON (HTML) em https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados?formato=json&dataInicial=01/01/2017&dataFinal=31/12/2025",
+      "failedAt": "2026-10-29T17:18:18.737Z"
     },
     "dolar": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1994-07",
       "last": "2026-10",
-      "lastValue": 5.1011,
+      "lastValue": 5.1148,
       "count": 388
     },
     "exportacoes": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1995-01",
       "last": "2026-09",
       "lastValue": 34584,
@@ -210,7 +212,7 @@
     },
     "importacoes": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1995-01",
       "last": "2026-09",
       "lastValue": 27715.2,
@@ -218,7 +220,7 @@
     },
     "saldo-comercial": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1995-01",
       "last": "2026-09",
       "lastValue": 6868.8,
@@ -226,7 +228,7 @@
     },
     "pib-anual": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "1996",
       "last": "2025",
       "lastValue": 2.3,
@@ -234,7 +236,7 @@
     },
     "despesas-funcao": {
       "ok": true,
-      "fetchedAt": "2026-10-28T16:58:02.596Z",
+      "fetchedAt": "2026-10-29T17:18:18.737Z",
       "first": "2015",
       "last": "2025",
       "count": 11
@@ -247,5 +249,5 @@
       "count": 94691
     }
   },
-  "updatedAt": "2026-10-28T16:58:02.596Z"
+  "updatedAt": "2026-10-29T17:18:18.737Z"
 }
